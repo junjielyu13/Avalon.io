@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  #Node Service
+  avalon-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: avalon/node
+    container_name: avalon-app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - avalon-network
+
+  #Nginx Service
+  avalon-webserver:
+    image: nginx:alpine
+    container_name: avalon-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - avalon-network
+
+  #MongoDb Service
+  avalon-db:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=development
+      - MONGO_INITDB_USER=mongodb
+      - MONGO_INITDB_PWD=mongodb
+    volumes:
+      - dbdata:/var/lib/mongo/
+    networks:
+      - avalon-network
+
+  # MailHog Service
+  avalon-mail:
+    image: mailhog/mailhog:v1.0.1
+    container_name: avalon-mail
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - avalon-network
+
+#Docker Networks
+networks:
+  avalon-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
