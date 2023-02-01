@@ -85,6 +85,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install nest.js
+RUN npm i -g @nestjs/cli
 
 # Add user for laravel application
 RUN groupadd -g 1001 www
@@ -99,6 +101,10 @@ COPY --chown=www:www . /var/www
 # Change current user to www
 USER www
 
+# Creates a "dist" folder with the production build
+# RUN npm run build
+
 # Expose port 3000 and start php-fpm server
 EXPOSE 3000
-CMD ["npm run start"]
+
+CMD [ "node", "./dist/main.js" ]
