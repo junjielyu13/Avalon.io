@@ -18,6 +18,9 @@ services:
       - ./:/var/www
     networks:
       - avalon-network
+    command: npm run start:dev
+    ports:
+      - 3000:3000
 
   #Nginx Service
   avalon-webserver:
@@ -41,7 +44,7 @@ services:
 
   #MongoDb Service
   avalon-db:
-    image: mongo
+    image: mongo:latest
     container_name: mongodb
     restart: unless-stopped
     tty: true
@@ -55,22 +58,11 @@ services:
     networks:
       - avalon-network
 
-  # MailHog Service
-  avalon-mail:
-    image: mailhog/mailhog:v1.0.1
-    container_name: avalon-mail
-    restart: unless-stopped
-    tty: true
-    ports:
-      - '1025:1025'
-      - '8025:8025'
-    networks:
-      - avalon-network
-
 #Docker Networks
 networks:
   avalon-network:
     driver: bridge
+
 #Volumes
 volumes:
   dbdata:

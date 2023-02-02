@@ -2,7 +2,7 @@ FROM node:18.13.0
 
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /usr/src/app
 
 RUN mkdir -p /usr/share/man/man1
 
@@ -84,9 +84,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN groupadd -g 1001 www
 RUN useradd -u 1001 -ms /bin/bash -g www www
 
-COPY . /var/www
-COPY --chown=www:www package*.json ./
 
+COPY --chown=www:www package*.json ./
+COPY --chown=www:www . .
 
 
 RUN npm install -g npm@latest
@@ -94,14 +94,8 @@ RUN npm install
 RUN npm ci
 
 
-# Copy existing application directory permissions
-COPY --chown=www:www . /var/www
-
-
 # Change current user to www
 USER www
-RUN chown -R $(whoami): /var/www/dist
-
 
 # Creates a "dist" folder with the production build
 # RUN npm run build
@@ -112,4 +106,4 @@ EXPOSE 3000
 # Creates a "dist" folder with the production build
 #RUN npm run build
 
-CMD [ "npm run start:dev" ]
+# CMD [ "npm run start:dev" ]
