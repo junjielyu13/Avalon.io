@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   #Node Service
@@ -21,18 +21,23 @@ services:
 
   #Nginx Service
   avalon-webserver:
-    image: nginx:alpine
-    container_name: avalon-webserver
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    container_name: avalon-nginx
+    depends_on:
+      - avalon-app
     restart: unless-stopped
     tty: true
+    environment:
+      - NGINX_SERVER_NAME=localhost
+      - NEST_HOST=localhost
+      - NEST_PORT=3000
+      - NGINX_MAX_BODY=100M
+    expose:
+      - 80
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www
-      - ./etc/nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - avalon-network
+      - 80:80
 
   #MongoDb Service
   avalon-db:
@@ -41,13 +46,10 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
-      - MONGO_INITDB_DATABASE=development
-      - MONGO_INITDB_USER=mongodb
-      - MONGO_INITDB_PWD=mongodb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - dbdata:/var/lib/mongo/
     networks:
@@ -60,8 +62,8 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - '1025:1025'
+      - '8025:8025'
     networks:
       - avalon-network
 

@@ -83,10 +83,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Extend timeout
 # RUN echo "request_terminate_timeout = 300" >> /usr/local/etc/php-fpm.d/docker.conf
 
-# Install composer
-# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-# Install nest.js
-RUN npm i -g @nestjs/cli
+RUN npm install -g npm@latest
+
 
 # Add user for laravel application
 RUN groupadd -g 1001 www
@@ -94,17 +92,27 @@ RUN useradd -u 1001 -ms /bin/bash -g www www
 
 # Copy existing application directory contents
 COPY . /var/www
+COPY --chown=www:www package*.json /var/www
+RUN npm install
+
+RUN npm i -g @nestjs/cli
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
 
 # Change current user to www
 USER www
+RUN chown -R $(whoami): /var/www/dist
+
+
 
 # Creates a "dist" folder with the production build
 # RUN npm run build
 
-# Expose port 3000 and start php-fpm server
+# Expose port 3000
 EXPOSE 3000
 
-CMD [ "node", "./dist/main.js" ]
+# Creates a "dist" folder with the production build
+#RUN npm run build
+
+CMD [ "npm run start:dev" ]
