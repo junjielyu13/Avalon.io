@@ -91,7 +91,8 @@ COPY --chown=www:www . .
 
 RUN npm install -g npm@latest
 RUN npm install
-RUN npm ci
+RUN npm install glob rimraf
+RUN npm run build
 
 
 # Change current user to www

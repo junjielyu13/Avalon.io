@@ -1,26 +1,69 @@
-version: '3'
+version: '3.8'
 
 services:
   #Node Service
   avalon-app:
+    container_name: avalon-app
+    image: avalon/node
     build:
       context: .
       dockerfile: Dockerfile
-    image: avalon/node
-    container_name: avalon-app
-    restart: unless-stopped
     tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    networks:
-      - avalon-network
-    command: npm run start:dev
+    working_dir: /usr/src/app
     ports:
       - 3000:3000
+      - 9229:9229
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - avalon-network
+    command: npm run start:debug
+    restart: unless-stopped
+
+  #MongoDb Service
+  avalon-db:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - dbdata:/usr/data/mongo/
+    networks:
+      - avalon-network
+
+  #MongoDb express Service
+  avalon-mongo-express:
+    image: mongo-express
+    container_name: avalon-mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    volumes:
+      - dbdata:/usr/data/mongoexpress/
+    depends_on:
+      - mongodb
+    networks:
+      - avalon-network
+    ports:
+      - 8081:8081
+    healthcheck:
+      test: wget --quiet --tries=3 --spider http://admin:admin123@localhost:8081 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # redis Service
 
   #Nginx Service
   avalon-webserver:
@@ -41,20 +84,8 @@ services:
       - 80
     ports:
       - 80:80
-
-  #MongoDb Service
-  avalon-db:
-    image: mongo:latest
-    container_name: mongodb
-    restart: unless-stopped
-    tty: true
-    ports:
-      - '27017:27017'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - dbdata:/var/lib/mongo/
+      - ./:/usr/src/app
     networks:
       - avalon-network
 
