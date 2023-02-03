@@ -7,18 +7,24 @@ services:
     image: avalon/node
     build:
       context: .
+      target: development
       dockerfile: Dockerfile
+    #command: npm run start:dev
     tty: true
     working_dir: /usr/src/app
     ports:
       - 3000:3000
       - 9229:9229
     volumes:
-      - ./:/usr/src/app
+      - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
       - avalon-network
-    command: npm run start:debug
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+    #command: npm run start:dev
+    command: npm run nodemon
     restart: unless-stopped
 
   #MongoDb Service
@@ -61,9 +67,10 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    tty: true
     restart: unless-stopped
 
-  # redis Service
+  #Redis Service
 
   #Nginx Service
   avalon-webserver:

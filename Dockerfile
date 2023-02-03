@@ -1,10 +1,10 @@
-FROM node:18.13.0
+FROM node:18.13.0 AS development
 
 
 # Set working directory
 WORKDIR /usr/src/app
 
-RUN mkdir -p /usr/share/man/man1
+# RUN mkdir -p /usr/share/man/man1
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev
 
 # Install puppeteer and headless Chrome for pdf generation
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - 
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - 
 RUN apt-get -f install
 RUN apt-get update && apt-get install -y \
     nodejs \
@@ -72,39 +72,83 @@ RUN apt-get update && apt-get install -y \
 # RUN npm install --global --unsafe-perm puppeteer
 # RUN chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# # Clear cache
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 
-# Extend timeout
-# RUN echo "request_terminate_timeout = 300" >> /usr/local/etc/php-fpm.d/docker.conf
+# # Extend timeout
+# # RUN echo "request_terminate_timeout = 300" >> /usr/local/etc/php-fpm.d/docker.conf
 
-# Add user for laravel application
-RUN groupadd -g 1001 www
-RUN useradd -u 1001 -ms /bin/bash -g www www
+# # Add user for laravel application
+# RUN groupadd -g 1001 www
+# RUN useradd -u 1001 -ms /bin/bash -g www www
+
+# COPY package*.json ./
+# RUN npm install glob rimraf
+# RUN npm install --only=development
+# COPY . .
+# RUN npm run build
+
+# # COPY --chown=www:www package*.json ./
+# # COPY --chown=www:www . .
 
 
-COPY --chown=www:www package*.json ./
-COPY --chown=www:www . .
+# RUN npm install -g npm@latest
+# RUN npm install
+# RUN npm install glob rimraf
+# RUN npm install typescript @types/node ts-node nodemon -g
+# RUN npm run build
 
-
-RUN npm install -g npm@latest
-RUN npm install
-RUN npm install glob rimraf
-RUN npm run build
-
-
-# Change current user to www
-USER www
+# # Change current user to www
+# USER www
 
 # Creates a "dist" folder with the production build
 # RUN npm run build
 
 # Expose port 3000
-EXPOSE 3000
+# EXPOSE 3000
 
 # Creates a "dist" folder with the production build
 #RUN npm run build
 
-# CMD [ "npm run start:dev" ]
+#Give the path of your endpoint
+# CMD [ "npm", "run", "nodemon" ]
+
+
+# Copy the package.jsons from host to container
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Here we install all the deps
+RUN npm install
+
+# Bundle app source / copy all other files
+COPY . .
+
+# Build the app to the /dist folder
+RUN npm run build
+
+
+
+# Build another image named production
+FROM node:18 AS production
+
+# Set node env to prod
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Set Working Directory
+WORKDIR /thomas/src/app
+
+# Copy all from development stage
+COPY --from=development /usr/src/app/ .
+
+EXPOSE 3000
+
+# Run app
+CMD [ "node", "dist/main" ]
+
+# Example Commands to build and run the dockerfile
+# docker build -t thomas-nest .
+# docker run thomas-nest
