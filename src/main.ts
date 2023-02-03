@@ -10,6 +10,12 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'resources/view'));
   app.setViewEngine('ejs');
 
+  // HOT LOADING
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
+
   await app.listen(3000);
 }
 bootstrap();
