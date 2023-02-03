@@ -3,9 +3,45 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["mongodb"]
 }
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb://root:password@localhost:27017/avalon?retryWrites=true&w=majority&authSource=admin"
 }
+
+
+model Room {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String   @default("Avalon Game")
+  code          String   @default("123456")   @unique
+  type          Int      @default(1)
+  player_number Int      @default(1)
+  start         Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+model Player {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String   @default("Anonymous")
+  code          String   @default("12345678")   @unique
+  role          Int      @default(1)
+  accio         String?    
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// model PlayerOnRoom{
+//   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+//   player        Player   @relation("Player", references: [id])
+//   player_Id     String   @db.ObjectId
+//   room          Room     @relation("Room", references: [id])
+//   room_Id       String   @db.ObjectId
+// }
+
+// model History{
+//   id            String   @id @default(auto()) @map("_id") @db.ObjectId
+// }

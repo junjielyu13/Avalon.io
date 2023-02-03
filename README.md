@@ -2,7 +2,14 @@
 
 `docker-compose up -d`
 
-`browser: localhost`
+`browser: localhost:3000`
+
+> nest:
+> `nest ...`
+
+> prisma
+
+`npx prisma ...`
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
