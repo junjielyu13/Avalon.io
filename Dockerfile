@@ -94,12 +94,8 @@ RUN apt-get update && apt-get install -y \
 # # COPY --chown=www:www . .
 
 
-# RUN npm install -g npm@latest
 # RUN npm install
 # RUN npm install glob rimraf
-# RUN npm install typescript @types/node ts-node nodemon -g
-# RUN npm run build
-
 # # Change current user to www
 # USER www
 
@@ -118,16 +114,26 @@ RUN apt-get update && apt-get install -y \
 
 # Copy the package.jsons from host to container
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
+
+RUN npm install -g npm@latest
+
 COPY package*.json ./
 
 # Here we install all the deps
 RUN npm install
+RUN npm install -g @nestjs/cli
+RUN npm install prisma --save-dev
 
 # Bundle app source / copy all other files
 COPY . .
 
 # Build the app to the /dist folder
 RUN npm run build
+# RUN npx prisma db push
+# RUN npm install @prisma/client
+# RUN npx prisma generate
+
+EXPOSE 3000
 
 
 
