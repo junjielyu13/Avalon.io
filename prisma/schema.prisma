@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb://root:password@localhost:27017/avalon?serverSelectionTimeoutMS=2000&authSource=admin"
+  url      = "mongodb+srv://root:password@avalon-db:27017/avalon?authSource=admin"
 }
 
 

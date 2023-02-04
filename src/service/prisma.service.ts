@@ -13,13 +13,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  async createGame(roomData): Promise<Room> {
-    const result = await this.room.create({ data: roomData });
-    return result;
-  }
+  // async createGame(roomData): Promise<Room> {
+  //   const result = await this.room.create({ data: roomData });
+  //   return result;
+  // }
 
-  async createPlayer(playerData): Promise<Player> {
-    const result = await this.player.create({ data: playerData });
-    return result;
-  }
+  // async createPlayer(playerData): Promise<Player> {
+  //   const result = await this.player.create({ data: playerData });
+  //   return result;
+  // }
 }

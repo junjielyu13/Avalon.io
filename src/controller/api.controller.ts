@@ -9,4 +9,9 @@ export class ApiController {
   joinRoom(): string {
     return this.apuService.joinRoom();
   }
+
+  @Get('playe_code')
+  yyj(): string {
+    return this.apuService.joinRoom();
+  }
 }

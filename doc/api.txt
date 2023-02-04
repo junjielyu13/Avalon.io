@@ -1,0 +1,78 @@
+
+
+index:
+    - join_room <code>: 
+        {
+            {
+                msg: "successful"
+            },
+            {
+                msg: "failed"
+            }
+        }
+
+    - create_room:
+        {
+            {
+                msg: "successful"
+                room_code: "xxxxxxx"
+            },
+            {
+                msg: "failed"
+                failed_code: 400
+            }
+        }
+
+ready:
+    - valification
+        {
+            {
+                msg: "host"
+                code: "200"
+                valification: "true"
+            },
+            {
+                msg: "client"
+                code: "300"
+                valification: "false"
+            }
+        }
+
+    - start_game <start> 
+        {
+            {
+                msg: "successful"
+                start: "true"
+            },
+            {
+                msg: "failed"
+                start: "false"
+            }
+        }
+
+
+game:
+    - status
+        {
+            {
+                msg: "successful"
+                roles:{
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                    player_code : role
+                }
+            },
+            {
+                msg: "failed"
+                start: "false"
+            }
+        }
+
+    ....
+
+    

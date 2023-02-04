@@ -1,18 +1,29 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CatsService } from '../service/cat.service';
+import { CreateCatDto } from '../dto/create-cat.dto';
+import { Cat } from '../schemas/cat.schema';
 
-@Controller()
+@Controller('cats')
 export class CatsController {
-  constructor(private readonly catService: CatsService) {}
+  constructor(private readonly catsService: CatsService) {}
 
-  //   @Get()
-  //   getHello(): string {
-  //     return this.appService.create();
-  //   }
+  @Post()
+  async create(@Body() createCatDto: CreateCatDto) {
+    await this.catsService.create(createCatDto);
+  }
 
-  //   @Get('index')
-  //   @Render('index')
-  //   getIndex(): { message: string } {
-  //     return { message: 'hello ejs!' };
-  //   }
+  @Get()
+  async findAll(): Promise<Cat[]> {
+    return this.catsService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Cat> {
+    return this.catsService.findOne(id);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.catsService.delete(id);
+  }
 }
