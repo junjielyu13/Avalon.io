@@ -9,15 +9,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './modules/cats.module';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb://root:password@avalon-db:27017/avalon?authSource=admin',
-    ),
-    CatsModule,
-  ],
-  controllers: [AppController, ApiController],
-  providers: [AppService, ApiService],
-  // controllers: [AppController, ApiController, PrismaController],
-  // providers: [AppService, ApiService, PrismaService],
+  // imports: [
+  //   MongooseModule.forRoot(
+  //     'mongodb://root:password@avalon-db:27017/avalon?authSource=admin',
+  //   ),
+  //   CatsModule,
+  // ],
+  // controllers: [AppController, ApiController],
+  // providers: [AppService, ApiService],
+  controllers: [AppController, ApiController, PrismaController],
+  providers: [AppService, ApiService, PrismaService],
 })
 export class AppModule {}

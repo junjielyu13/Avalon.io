@@ -4,12 +4,12 @@
 generator client {
   provider = "prisma-client-js"
   previewFeatures = ["mongodb"]
-  binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  // binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://root:password@avalon-db:27017/avalon?authSource=admin"
+  url      = "mongodb://root:password@avalon-db:27017/avalon?authSource=admin&directConnection=true"
 }
 
 

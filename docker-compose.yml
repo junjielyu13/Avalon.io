@@ -37,12 +37,11 @@ services:
     ports:
       - 27017:27017
     environment:
+      # - MONGO_REPLICAS=avalon-db:27017
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
-      # MONGODB_DATABASE: avalon
-      - MONGODB_DATABASE=avalon
+      - MONGO_DATABASE=avalon
     volumes:
-      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
       - dbdata:/usr/data/mongo/
     networks:
       - avalon-network
