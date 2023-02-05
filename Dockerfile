@@ -129,9 +129,7 @@ COPY . .
 
 # Build the app to the /dist folder
 RUN npm run build
-# RUN npx prisma db push
-# RUN npm install @prisma/client
-# RUN npx prisma generate
+
 
 EXPOSE 3000
 

@@ -7,6 +7,7 @@ generator client {
   // binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
+
 datasource db {
   provider = "mongodb"
   url      = "mongodb://root:password@avalon-db:27017/avalon?authSource=admin&directConnection=true"
