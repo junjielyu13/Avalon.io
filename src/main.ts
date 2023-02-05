@@ -13,7 +13,7 @@ async function bootstrap() {
   // HOT LOADING
   if (module.hot) {
     module.hot.accept();
-    module.hot.dispose(() => app.close());
+    module.hot.dispose(() => app.close());   
   }
 
   await app.listen(3000);
