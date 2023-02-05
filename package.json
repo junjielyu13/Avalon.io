@@ -12,7 +12,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "nodemon": "nodemon --legacy-watch -x ts-node src/main.ts",
+    "nodemon": "nodemon --config nodemon.json",
     "start:hot": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
