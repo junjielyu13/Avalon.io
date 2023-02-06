@@ -16,4 +16,10 @@ export class AppController {
   getIndex(): { message: string } {
     return { message: 'heldo ejs!' };
   }
+
+  @Get('room')
+  @Render('game')
+  getGame() {
+    return 0;
+  }
 }
