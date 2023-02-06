@@ -19,26 +19,34 @@
   </head>
   <body>
     <div class="container">
-      <div class="nav">logo</div>
+      <div class="nav">
+        <span class="logo">阿瓦隆</span>
+      </div>
 
       <div class="card">
         <div class="icon"></div>
         <div class="info">
-          <div class="name">名称:</div>
+          <div class="name">昵称</div>
           <div class="input">
-            <input type="text" name="" id="" />
+            <input
+              type="text"
+              name="player_name"
+              id="player_name"
+              value="User9527"
+              class="input-name"
+            />
           </div>
         </div>
       </div>
 
-      <div class="button">
-        <div class="button-join">进入房间</div>
+      <div class="button-block">
+        <button class="button">
+          <span class="button-info button-join"> 进入房间 </span>
+        </button>
 
-        <input
-          type="button"
-          class="button-create"
-          onclick="createRoom"
-        />创建房间
+        <button class="button">
+          <span class="button-info button-create"> 创建房间 </span>
+        </button>
       </div>
     </div>
   </body>
