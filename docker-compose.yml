@@ -30,7 +30,7 @@ services:
 
   #MongoDb Service
   avalon-db:
-    image: mongo:5.0.0
+    image: prismagraphql/mongo-single-replica:4.4.3-bionic
     container_name: avalon-mongodb
     restart: unless-stopped
     tty: true

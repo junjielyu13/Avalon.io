@@ -13,6 +13,6 @@ export class AppController {
   @Get('index')
   @Render('index')
   getIndex(): { message: string } {
-    return { message: 'hello ejs!' };
+    return { message: 'heldo ejs!' };
   }
 }
