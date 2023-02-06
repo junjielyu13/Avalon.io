@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Post, Render } from '@nestjs/common';
 import { AppService } from '../service/app.service';
 
 @Controller()
@@ -13,6 +13,6 @@ export class AppController {
   @Get('index')
   @Render('index')
   getIndex(): { message: string } {
-    return { message: 'hello ejs!' };
+    return { message: 'heldo ejs!' };
   }
 }
