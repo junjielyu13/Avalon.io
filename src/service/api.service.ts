@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from './prisma.service';
+import { Player, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ApiService {
+  constructor(private prisma: PrismaService) {}
+
   joinRoom(): any {
     return {
       code: 200,
@@ -10,7 +14,9 @@ export class ApiService {
     };
   }
 
-  createRoom():any{
-    return 0;
+  createPlayer(data: Prisma.PlayerCreateInput): any {
+    return this.prisma.player.create({
+      data,
+    });
   }
 }

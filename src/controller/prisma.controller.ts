@@ -3,7 +3,7 @@ import { PrismaService } from '../service/prisma.service';
 
 @Controller('db')
 export class PrismaController {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
   // @Post('createGame')
   // createGame(@Request() req): any {
   //   return this.prismaService.createGame(req);
@@ -13,10 +13,10 @@ export class PrismaController {
   //   return this.prismaService.createPlayer(req);
   // }
 
-  @Post('createPlayer')
-  createPlayer(@Req() req): any {
-    console.log("query:" + req.query);
-    console.log("body: " + req.body);
-    return this.prismaService.testAdd(parseInt(req.query.value));
-  }
+  // @Post('createPlayer')
+  // createPlayer(@Req() req): any {
+  //   console.log("query:" + req.query);
+  //   console.log("body: " + req.body);
+  //   return this.prismaService.testAdd(parseInt(req.query.value));
+  // }
 }
