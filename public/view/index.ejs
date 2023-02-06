@@ -2,16 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta name="screen-orientation" content="portrait" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>阿瓦隆</title>
 
     <link rel="stylesheet" href="../css/app.css" />
     <link rel="stylesheet" href="../css/normalize.css" />
+
+    <script src="../util/jquery.js"></script>
+    <script src="../js/system.js"></script>
+    <script src="../js/app.js"></script>
   </head>
   <body>
-    <a href="#">dsdadasdas</a>
-    <h1><%=message%></h1>
-    <h2>这是 ejs 演示代码</h2>
+    <div class="container">
+      <div class="nav">logo</div>
+
+      <div class="card">
+        <div class="icon"></div>
+        <div class="info">
+          <div class="name">名称:</div>
+          <div class="input">
+            <input type="text" name="" id="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="button">
+        <div class="button-join">进入房间</div>
+
+        <input
+          type="button"
+          class="button-create"
+          onclick="createRoom"
+        />创建房间
+      </div>
+    </div>
   </body>
 </html>
