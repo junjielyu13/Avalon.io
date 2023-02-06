@@ -9,4 +9,8 @@ export class ApiService {
       msg: 'join room sucessfu',
     };
   }
+
+  createRoom():any{
+    return 0;
+  }
 }

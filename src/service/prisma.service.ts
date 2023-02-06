@@ -1,5 +1,5 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient, Player, Room } from '@prisma/client';
+import { PrismaClient, Player, Room, Test } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -11,6 +11,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     this.$on('beforeExit', async () => {
       await app.close();
     });
+  }
+
+  async testAdd(value): Promise<Test> {
+    const result = await this.test.create({ data: { num: value, } });
+    console.log("result:" + result);
+    return result;
   }
 
   // async createGame(roomData): Promise<Room> {
