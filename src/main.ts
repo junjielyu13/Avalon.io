@@ -6,8 +6,8 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static/' });
-  app.setBaseViewsDir(join(__dirname, '..', 'resources/view'));
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'public/view'));
   app.setViewEngine('ejs');
 
   // HOT LOADING
