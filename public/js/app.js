@@ -13,6 +13,17 @@ function createRoom() {
       if (response.code == 200) {
         let room_code = response.room_code;
         // create room successfully
+
+        //   Route::get('/producto/{product_id}', 'ProductFilterController@getProduct')->name('menu.product');
+
+        // ajax{url:/room/player_code}
+
+        // @Get('/findGirlById/:id')
+        // findGirlById(@Request() req):any{
+        //   let id:number = parseInt(req.params.id)
+        //   return this.girlService.getGirlById(id)
+        // }
+        // GET http://localhost:3000/girl/findGirlById/2
       } else {
         // reate room failed
       }
