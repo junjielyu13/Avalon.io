@@ -15,7 +15,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
   async testAdd(value): Promise<Test> {
     const result = await this.test.create({ data: { num: value, } });
-    console.log("result:" + result);
+    console.log("resulta:" + result);
     return result;
   }
 

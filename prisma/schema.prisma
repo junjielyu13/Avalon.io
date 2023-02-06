@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("mongodb://root:password@avalon-db:27017/avalon?authSource=admin&directConnection=true")
+  url      = "mongodb://root:password@avalon-db:27017/avalon?authSource=admin&directConnection=true"
 }
 
 model Test {
