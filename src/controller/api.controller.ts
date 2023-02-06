@@ -26,7 +26,7 @@ export class ApiController {
     const playerdata = {
       name: 'Anonymous',
       code: '12345678',
-      role: 1,
+      role: 2,
       accio: 'accion',
     };
     return this.apiService.createPlayer(playerdata);
