@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiService } from '../service/api.service';
-import { Player as PlayerModel } from '@prisma/client';
-import { query } from 'express';
 
 @Controller('api')
 export class ApiController {
   constructor(private readonly apiService: ApiService) { }
 
   @Get('joinRoom')
-  joinRoom(@Query() query): string {
-    //return this.apiService.joinRoom(query.player_id, query.room_id);
-    return "Not finished"
+  joinRoom(@Query() query): any {
+    return this.apiService.joinRoom(query.player_code, query.room_code);
+  }
+
+  @Get('leaveRoom')
+  leaveRoom(@Query() query): any {
+    return this.apiService.leaveRoom(query.player_code);
   }
 
   @Post('createPlayer')
@@ -22,7 +24,7 @@ export class ApiController {
   @Post('createRoom')
   createRoom(@Body() body): any {
     return this.apiService.createRoomByPlayerCode(body.player_code);
-    //return this.apiService.createRoomByPlayerID("63e1808ff5c85f3f5ea0f2c1");
+    //return this.apiService.createRoomByPlayerID("00001");
   }
 
   @Get('debug')
