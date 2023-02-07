@@ -1,34 +1,32 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { ApiService } from '../service/api.service';
 import { Player as PlayerModel } from '@prisma/client';
+import { query } from 'express';
 
 @Controller('api')
 export class ApiController {
-  constructor(private readonly apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) { }
 
-  // @Post('creatRoom')
-  // createRoom(): string {
-  //   return this.apiService.createRoom();
-  // }
-
-  @Get('join')
-  joinRoom(): string {
-    return this.apiService.joinRoom();
+  @Get('joinRoom')
+  joinRoom(@Query() query): string {
+    //return this.apiService.joinRoom(query.player_id, query.room_id);
+    return "Not finished"
   }
 
-  @Get('playe_code')
-  yyj(): string {
-    return this.apiService.joinRoom();
+  @Post('createPlayer')
+  createPlayer(@Body() body): any {
+    return this.apiService.createPlayer({ name: body.player_name });
+    //return this.apiService.createPlayer({ name: "西"});
   }
 
-  @Post('create')
-  createPlayer(): any {
-    const playerdata = {
-      name: 'Anonymous',
-      code: '12345678',
-      role: 2,
-      accio: 'accion',
-    };
-    return this.apiService.createPlayer(playerdata);
+  @Post('createRoom')
+  createRoom(@Body() body): any {
+    return this.apiService.createRoomByPlayerCode(body.player_code);
+    //return this.apiService.createRoomByPlayerID("63e1808ff5c85f3f5ea0f2c1");
+  }
+
+  @Get('debug')
+  debug(): any {
+    return this.apiService.debug();
   }
 }

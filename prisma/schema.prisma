@@ -12,17 +12,19 @@ datasource db {
   url      = "mongodb://root:password@avalon-db:27017/avalon?authSource=admin&directConnection=true"
 }
 
-model Test {
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  num Int @default(0)
+model Util {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  player_count Int    @default(0)
+  room_count   Int    @default(0)
 }
 
 model Room {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   title         String   @default("Avalon Game")
-  code          String   @unique @default("123456")
+  code          String   @unique @default("00000")
   type          Int      @default(1)
   player_number Int      @default(1)
+  players       String[]
   start         Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -31,8 +33,9 @@ model Room {
 model Player {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @default("Anonymous")
-  code      String   @unique @default("12345678")
+  code      String   @unique @default("00000")
   role      Int      @default(1)
+  room_id   String?
   accio     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,7 +54,7 @@ model Player {
 // }
 
 model User {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
   email String  @unique
   name  String?
 }
