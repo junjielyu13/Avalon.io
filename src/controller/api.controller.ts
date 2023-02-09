@@ -15,10 +15,13 @@ export class ApiController {
     return this.apiService.leaveRoom(query.player_code);
   }
 
+  /*
   @Get('startGame')
   startGame(@Query() query): any {
-    return this.apiService.startGame(query.room_code);
+    //return this.apiService.startGame(query.room_code);
+    return "not finished";
   }
+  */
 
   @Get('genRandomPlayer')
   genRandomPlayer(): any {
@@ -26,11 +29,13 @@ export class ApiController {
     return this.apiService.createPlayer({ name: name });
   }
 
+  /*
   @Post('createPlayer')
   createPlayer(@Body() body): any {
     return this.apiService.createPlayer({ name: body.player_name });
     //return this.apiService.createPlayer({ name: "西"});
   }
+  */
 
   @Post('createRoom')
   createRoom(@Body() body): any {
@@ -38,10 +43,12 @@ export class ApiController {
     //return this.apiService.createRoomByPlayerID("00001");
   }
 
+  /*
   @Get('debug')
   debug(): any {
     return this.apiService.debug();
   }
+*/
 
   // 包括最小与最大
   genRandomInt(min: number, max: number): number {

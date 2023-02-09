@@ -35,7 +35,7 @@ export class ApiService {
       console.log("玩家已经在房间内了");
       return {
         code: "400",
-        msg: "玩家已经在房间内了"
+        msg: "Player " + player.code + " is already in the room"
       };
     }
     // 房间玩家人数+1
@@ -56,7 +56,7 @@ export class ApiService {
       console.log("无法获取对应房间,进入房间失败");
       return {
         code: "400",
-        msg: "无法获取对应房间,进入房间失败"
+        msg: "Cannot find the room, join room failed"
       };
     }
     console.log("加入房间成功");
@@ -74,13 +74,14 @@ export class ApiService {
       console.log("无法获取对应房间,开始游戏失败");
       return {
         code: "400",
-        msg: "无法获取对应房间,开始游戏失败"
+        msg: "Cannot find the room, start failed"
       }
     }
+
+    return "not finished"
     // 判断人家人数是否到5
     // 给玩家分配身份
     // 设置游戏为开始状态
-
   }
 
   async leaveRoom(player_code: string): Promise<any> {
@@ -90,14 +91,14 @@ export class ApiService {
       console.log("无法获取对应玩家, 离开房间失败");
       return {
         code: "400",
-        msg: "无法获取对应玩家, 离开房间失败"
+        msg: "Cannot find the player, leave room failed"
       }
     }
     if (!player.room_id) {
       console.log("玩家" + player_code + "并没有在任何房间内, 离开房间失败");
       return {
         code: "400",
-        msg: "玩家" + player_code + "并没有在任何房间内, 离开房间失败"
+        msg: "Player " + player_code + "is not joined the room, leave room failed"
       }
     }
     let room = await this.prisma.room.findUnique({ where: { id: player.room_id } });
@@ -105,7 +106,7 @@ export class ApiService {
       console.log("无法获取对应房间, 离开房间失败");
       return {
         code: "400",
-        msg: "无法获取对应房间, 离开房间失败"
+        msg: "Cannot find the room, leave room failed"
       }
     }
     let playerIndex = room.players.indexOf(player.id);
@@ -122,9 +123,10 @@ export class ApiService {
         },
       });
       if (!updateRoom) {
+        console.log("更新房间数据失败,离开房间失败");
         return {
           code: "400",
-          msg: "更新房间数据失败"
+          msg: "Cannot update room data, leave room failed"
         }
       }
     }
@@ -137,16 +139,16 @@ export class ApiService {
       },
     });
     if (!updatePlayer) {
-      console.log("更新玩家失败");
+      console.log("更新玩家失败,离开房间失败");
       return {
         code: "400",
-        msg: "更新玩家失败"
+        msg: "Cannot update player data, leave room failed"
       }
     }
     console.log("玩家成功离开房间");
     return {
       code: "200",
-      msg: "玩家成功离开房间"
+      msg: "Leave the room succesful!"
     }
   }
 
@@ -170,13 +172,13 @@ export class ApiService {
       console.error("创建玩家失败");
       return {
         code: "400",
-        msg: "创建玩家失败"
+        msg: "Create player failed"
       };
     }
     // 创建玩家成功
     return {
       code: "200",
-      msg: "创建玩家成功",
+      msg: "Create player sucessful",
       player_code: ret.code,
       player_id: ret.id,
       player_name: ret.name
@@ -206,7 +208,7 @@ export class ApiService {
       console.error("创建房间失败");
       return {
         code: "400",
-        msg: "创建房间失败"
+        msg: "Create room failed"
       };
     }
     // 创建房间成功
@@ -214,7 +216,7 @@ export class ApiService {
     this.joinRoom(player_id, ret.id, player_name);
     return {
       code: "200",
-      msg: "创建房间成功",
+      msg: "Create room succesful",
       room_code: ret.code,
       room_id: ret.id
     };
@@ -240,6 +242,6 @@ export class ApiService {
   }
 
   async debug() {
-    return "测试";
+    return "debug msg";
   }
 }
