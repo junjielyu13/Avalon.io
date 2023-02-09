@@ -43,7 +43,9 @@
 
       <div class="button-block">
         <button class="button">
-          <span class="button-info button-join"> 进入房间 </span>
+          <span class="button-info button-join" onclick="showPopup()">
+            进入房间
+          </span>
         </button>
 
         <button class="button">
@@ -51,6 +53,27 @@
             <span class="button-info button-create"> 创建房间 </span>
           </a>
         </button>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <div class="overlay-box">
+        <div class="popup">
+          <p class="popup-title">输入房间号</p>
+          <div class="popup-input">
+            <input
+              type="text"
+              name="player_name"
+              id="player_name"
+              value="User9527"
+              class="input-name"
+            />
+          </div>
+          <div class="popup_btn">
+            <button class="cancel-join-room" onclick="hidePopup()">取消</button>
+            <button class="confir-join-room" onclick="hidePopup()">确认</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
