@@ -207,6 +207,7 @@ html {
 
 .cancel-join-room,
 .confir-join-room {
+  font-family: 'Arial', 'Microsoft YaHei', '黑体', '宋体', sans-serif;
   width: 60px;
   height: 50px;
   background-color: #f30;
