@@ -7,12 +7,23 @@ export class ApiController {
 
   @Get('joinRoom')
   joinRoom(@Query() query): any {
-    return this.apiService.joinRoom(query.player_code, query.room_code);
+    return this.apiService.joinRoom(query.player_code, query.room_code, query.player_name);
   }
 
   @Get('leaveRoom')
   leaveRoom(@Query() query): any {
     return this.apiService.leaveRoom(query.player_code);
+  }
+
+  @Get('startGame')
+  startGame(@Query() query): any {
+    return this.apiService.startGame(query.room_code);
+  }
+
+  @Get('genRandomPlayer')
+  genRandomPlayer(): any {
+    let name = "User" + this.genRandomInt(0, 9999).toString();
+    return this.apiService.createPlayer({ name: name });
   }
 
   @Post('createPlayer')
@@ -23,12 +34,17 @@ export class ApiController {
 
   @Post('createRoom')
   createRoom(@Body() body): any {
-    return this.apiService.createRoomByPlayerCode(body.player_code);
+    return this.apiService.createRoomByPlayerCode(body.player_code, body.player_name);
     //return this.apiService.createRoomByPlayerID("00001");
   }
 
   @Get('debug')
   debug(): any {
     return this.apiService.debug();
+  }
+
+  // 包括最小与最大
+  genRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 }

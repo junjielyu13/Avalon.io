@@ -6,10 +6,11 @@ import { Player, Prisma } from '@prisma/client';
 export class ApiService {
   constructor(private prisma: PrismaService) { }
 
-  async joinRoom(player_code: string, room_code: string): Promise<any> {
+  async joinRoom(player_code: string, room_code: string, player_name: string = null): Promise<any> {
     // 通过code获得玩家或房间
     let player = (await this.prisma.player.findUnique({ where: { code: player_code } }));
     let room = (await this.prisma.room.findUnique({ where: { code: room_code } }));
+    player_name = player_name ? player_name : player.name;
     // 记录玩家自己在哪个房间里面
     const updatePlayer = await this.prisma.player.update({
       where: {
@@ -17,6 +18,7 @@ export class ApiService {
       },
       data: {
         room_id: room.id,
+        name: player_name,
       },
     });
     // 如果加入房间失败
@@ -66,16 +68,33 @@ export class ApiService {
     };
   }
 
+  async startGame(room_code: string): Promise<any> {
+    let room = (await this.prisma.room.findUnique({ where: { code: room_code } }));
+    if (!room) {
+      console.log("无法获取对应房间,开始游戏失败");
+      return {
+        code: "400",
+        msg: "无法获取对应房间,开始游戏失败"
+      }
+    }
+    // 判断人家人数是否到5
+    // 给玩家分配身份
+    // 设置游戏为开始状态
+
+  }
+
   async leaveRoom(player_code: string): Promise<any> {
     // 通过code获得玩家
     let player = await this.prisma.player.findUnique({ where: { code: player_code } });
     if (!player) {
+      console.log("无法获取对应玩家, 离开房间失败");
       return {
         code: "400",
         msg: "无法获取对应玩家, 离开房间失败"
       }
     }
     if (!player.room_id) {
+      console.log("玩家" + player_code + "并没有在任何房间内, 离开房间失败");
       return {
         code: "400",
         msg: "玩家" + player_code + "并没有在任何房间内, 离开房间失败"
@@ -83,6 +102,7 @@ export class ApiService {
     }
     let room = await this.prisma.room.findUnique({ where: { id: player.room_id } });
     if (!room) {
+      console.log("无法获取对应房间, 离开房间失败");
       return {
         code: "400",
         msg: "无法获取对应房间, 离开房间失败"
@@ -117,11 +137,13 @@ export class ApiService {
       },
     });
     if (!updatePlayer) {
+      console.log("更新玩家失败");
       return {
         code: "400",
         msg: "更新玩家失败"
       }
     }
+    console.log("玩家成功离开房间");
     return {
       code: "200",
       msg: "玩家成功离开房间"
@@ -157,11 +179,11 @@ export class ApiService {
       msg: "创建玩家成功",
       player_code: ret.code,
       player_id: ret.id,
-      player_nam: ret.name
+      player_name: ret.name
     };
   }
 
-  async createRoomByPlayerID(player_id: string): Promise<any> {
+  async createRoomByPlayerID(player_id: string, player_name: string = null): Promise<any> {
     // 获取当前的房间code
     let roomCount = (await this.prisma.util.findFirst()).room_count;
     // 不管有没有创建成功，给下个房间的code+1
@@ -189,7 +211,7 @@ export class ApiService {
     }
     // 创建房间成功
     //尝试加入房间，但是这里失败了不会提示...
-    this.joinRoom(player_id, ret.id);
+    this.joinRoom(player_id, ret.id, player_name);
     return {
       code: "200",
       msg: "创建房间成功",
@@ -198,7 +220,7 @@ export class ApiService {
     };
   }
 
-  async createRoomByPlayerCode(player_code: string): Promise<any> {
+  async createRoomByPlayerCode(player_code: string, player_name: string = null): Promise<any> {
     // 通过玩家的code获得玩家id
     let player_id = (await this.prisma.player.findUnique({
       where: {
@@ -206,7 +228,7 @@ export class ApiService {
       }
     })).id
     // 创建房间
-    return this.createRoomByPlayerID(player_id);
+    return this.createRoomByPlayerID(player_id, player_name);
   }
 
   // Int转 String并填充至对应数位
