@@ -154,15 +154,27 @@ export class ApiService {
 
   async createPlayer(data: Prisma.PlayerCreateInput): Promise<any> {
     // 获取当前的玩家code
-    let playerCount = (await this.prisma.util.findFirst()).player_count;
-    // 不管有没有创建成功，给下个玩家的code+1
-    await this.prisma.util.update({
-      where: {
-        id: "63e1874e7e5e6852db2b2171"
-      }, data: {
-        player_count: playerCount + 1
-      }
-    })
+    let playerUtil = await this.prisma.util.findFirst();
+    let playerCount = 0;
+    // 如果没有没找到util则创建之
+    if (!playerUtil) {
+      await this.prisma.util.create(
+        {
+          data: {
+            player_count: 1,
+            room_count: 1
+          }
+        });
+    } else {
+      playerCount = playerUtil.player_count;
+      await this.prisma.util.update({
+        where: {
+          id: playerUtil.id
+        }, data: {
+          player_count: playerCount + 1
+        }
+      })
+    }
     // 使用获得的playercode修改data中的对应数据
     data.code = this.intToString(playerCount, 5);
     // 尝试创建玩家
@@ -186,16 +198,28 @@ export class ApiService {
   }
 
   async createRoomByPlayerID(player_id: string, player_name: string = null): Promise<any> {
-    // 获取当前的房间code
-    let roomCount = (await this.prisma.util.findFirst()).room_count;
-    // 不管有没有创建成功，给下个房间的code+1
-    await this.prisma.util.update({
-      where: {
-        id: "63e1874e7e5e6852db2b2171"
-      }, data: {
-        room_count: roomCount + 1
-      }
-    })
+    // 获取当前的房间
+    let roomUtil = await this.prisma.util.findFirst();
+    let roomCount = 0;
+    // 如果没有没找到util则创建之
+    if (!roomUtil) {
+      await this.prisma.util.create(
+        {
+          data: {
+            player_count: 1,
+            room_count: 1
+          }
+        });
+    } else {
+      roomCount = roomUtil.room_count;
+      await this.prisma.util.update({
+        where: {
+          id: roomUtil.id
+        }, data: {
+          room_count: roomCount + 1
+        }
+      })
+    }
     // 尝试创建房间
     var ret = await this.prisma.room.create({
       data: {
