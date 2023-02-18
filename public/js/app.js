@@ -1,3 +1,7 @@
+window.onload = function () {
+  createUser();
+};
+
 function showPopup() {
   var overlay = document.querySelector('.overlay');
   overlay.style.display = 'block';
@@ -8,36 +12,31 @@ function hidePopup() {
   overlay.style.display = 'none';
 }
 
-// function createRoom() {
-//   console.log('error');
-//   var player_name = player.name;
-//   var player_code = player.code;
-//   $.ajax({
-//     type: 'POST',
-//     url: '/api/creatRoom',
-//     data: {
-//       player_code: player_code,
-//       player_name: player_name,
-//     },
-//     success: function (response) {
-//       if (response.code == 200) {
-//         let room_code = response.room_code;
-//         // create room successfully
+function createUser() {
+  var playerId = localStorage.getItem('player_id');
+  var playerCode = localStorage.getItem('player_code');
+  var playerName = localStorage.getItem('player_name');
 
-//         //   Route::get('/producto/{product_id}', 'ProductFilterController@getProduct')->name('menu.product');
-
-//         // ajax{url:/room/player_code}
-
-//         // @Get('/findGirlById/:id')
-//         // findGirlById(@Request() req):any{
-//         //   let id:number = parseInt(req.params.id)
-//         //   return this.girlService.getGirlById(id)
-//         // }
-//         // GET http://localhost:3000/girl/findGirlById/2
-//       } else {
-//         // reate room failed
-//       }
-//     },
-//     error: function (response) {},
-//   });
-// }
+  if (!playerId || !playerCode || !playerName) {
+    localStorage.clear();
+    $.ajax({
+      type: 'GET',
+      url: 'api/generate-random-player',
+      success: function (response) {
+        console.log(response);
+        playerCode = response.player_code;
+        playerId = response.player_id;
+        playerName = response.player_name;
+        document.querySelector('#player_name').value = playerName;
+        localStorage.setItem('player_name', playerName);
+        localStorage.setItem('player_id', playerId);
+        localStorage.setItem('player_code', playerCode);
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  } else {
+    document.querySelector('#player_name').value = playerName;
+  }
+}

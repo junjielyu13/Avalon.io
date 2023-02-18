@@ -3,11 +3,21 @@ import { ApiService } from '../service/api.service';
 
 @Controller('api')
 export class ApiController {
-  constructor(private readonly apiService: ApiService) { }
+  constructor(private readonly apiService: ApiService) {}
+
+  @Get('generate-random-player')
+  genRandomPlayer(): any {
+    const name = 'User' + this.genRandomInt(0, 9999).toString();
+    return this.apiService.createPlayer({ name: name });
+  }
 
   @Get('joinRoom')
   joinRoom(@Query() query): any {
-    return this.apiService.joinRoom(query.player_code, query.room_code, query.player_name);
+    return this.apiService.joinRoom(
+      query.player_code,
+      query.room_code,
+      query.player_name,
+    );
   }
 
   @Get('leaveRoom')
@@ -23,12 +33,6 @@ export class ApiController {
   }
   */
 
-  @Get('genRandomPlayer')
-  genRandomPlayer(): any {
-    let name = "User" + this.genRandomInt(0, 9999).toString();
-    return this.apiService.createPlayer({ name: name });
-  }
-
   /*
   @Post('createPlayer')
   createPlayer(@Body() body): any {
@@ -39,7 +43,10 @@ export class ApiController {
 
   @Post('createRoom')
   createRoom(@Body() body): any {
-    return this.apiService.createRoomByPlayerCode(body.player_code, body.player_name);
+    return this.apiService.createRoomByPlayerCode(
+      body.player_code,
+      body.player_name,
+    );
     //return this.apiService.createRoomByPlayerID("00001");
   }
 
