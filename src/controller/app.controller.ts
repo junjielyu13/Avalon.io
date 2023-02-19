@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Render } from '@nestjs/common';
+import { Controller, Get, Post, Render, Param } from '@nestjs/common';
 import { AppService } from '../service/app.service';
 
 @Controller()
@@ -17,9 +17,9 @@ export class AppController {
     return { message: 'heldo ejs!' };
   }
 
-  @Get('room')
+  @Get('room/:room_code')
   @Render('game')
-  getGame() {
-    return 0;
+  getGame(@Param() params): { message: string } {
+    return { message: params.room_code };
   }
 }

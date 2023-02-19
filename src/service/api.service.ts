@@ -255,7 +255,7 @@ export class ApiService {
     }
     // 创建房间成功
     //尝试加入房间，但是这里失败了不会提示...
-    this.joinRoom(player_id, ret.id, player_name);
+    // this.joinRoom(player_id, ret.id, player_name);
     return {
       code: '200',
       msg: 'Create room succesful',
@@ -281,13 +281,13 @@ export class ApiService {
   }
 
   // Int转 String并填充至对应数位
-  intToString(num: number, size: number): string {
+  private intToString(num: number, size: number): string {
     let s = num.toString();
     while (s.length < size) s = '0' + s;
     return s;
   }
 
-  async debug() {
+  private async debug() {
     return 'debug msg';
   }
 }
