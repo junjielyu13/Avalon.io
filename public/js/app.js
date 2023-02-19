@@ -40,3 +40,46 @@ function createUser() {
     document.querySelector('#player_name').value = playerName;
   }
 }
+
+$(document).ready(function () {
+  document.querySelector('#create-room').addEventListener('click', function () {
+    console.log('test');
+    var playerId = localStorage.getItem('player_id');
+    var playerCode = localStorage.getItem('player_code');
+    var playerName = localStorage.getItem('player_name');
+    $.ajax({
+      type: 'POST',
+      url: 'api/create-room',
+      data: {
+        player_code: playerCode,
+        player_name: playerName,
+      },
+      dataType: 'json',
+      success: function (response) {
+        console.log('success');
+        console.log(response);
+        var roomCode = response.room_code;
+        console.log(roomCode);
+
+        $.ajax({
+          type: 'GET',
+          url: 'room/' + roomCode,
+          success: function (response) {
+            console.log('success');
+            console.log(response);
+            let addressUrl = 'room/' + roomCode;
+            window.location.replace(addressUrl);
+          },
+          error: function (error) {
+            console.log('error');
+            console.log(error);
+          },
+        });
+      },
+      error: function (error) {
+        console.log('error');
+        console.log(error);
+      },
+    });
+  });
+});

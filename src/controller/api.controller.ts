@@ -11,6 +11,15 @@ export class ApiController {
     return this.apiService.createPlayer({ name: name });
   }
 
+  @Post('create-room')
+  createRoom(@Body() body): any {
+    return this.apiService.createRoomByPlayerCode(
+      body.player_code,
+      body.player_name,
+    );
+    //return this.apiService.createRoomByPlayerID("00001");
+  }
+
   @Get('joinRoom')
   joinRoom(@Query() query): any {
     return this.apiService.joinRoom(
@@ -40,15 +49,6 @@ export class ApiController {
     //return this.apiService.createPlayer({ name: "西"});
   }
   */
-
-  @Post('createRoom')
-  createRoom(@Body() body): any {
-    return this.apiService.createRoomByPlayerCode(
-      body.player_code,
-      body.player_name,
-    );
-    //return this.apiService.createRoomByPlayerID("00001");
-  }
 
   /*
   @Get('debug')
